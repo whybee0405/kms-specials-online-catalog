@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* KMS Branding Colors */
+    --kms-primary: 55 89% 51%;      /* #F3EA18 */
+    --kms-secondary: 220 100% 34%;   /* #0037AA */
+    --kms-accent: 12 74% 43%;        /* #BF3617 */
+    
+    /* Updated color variables with KMS branding */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: var(--kms-primary);
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: var(--kms-secondary);
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: var(--kms-accent);
+    --accent-foreground: 0 0% 100%;
+    --destructive: var(--kms-accent);
+    --destructive-foreground: 0 0% 100%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: var(--kms-primary);
+    --radius: 0.75rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: var(--kms-primary);
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: var(--kms-secondary);
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: var(--kms-accent);
+    --accent-foreground: 210 40% 98%;
+    --destructive: var(--kms-accent);
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: var(--kms-primary);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-body;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-weight: 800; /* Extra Bold */
+    letter-spacing: -0.025em;
+  }
+  
+  /* KMS Brand Gradient Backgrounds */
+  .kms-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--kms-primary)) 0%, hsl(var(--kms-secondary)) 100%);
+  }
+  
+  .kms-gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--kms-accent)) 0%, hsl(var(--kms-secondary)) 100%);
+  }
+  
+  .kms-gradient-subtle {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--kms-primary) / 0.05) 100%);
+  }
+  
+  /* KMS Brand Text Colors */
+  .text-kms-primary {
+    color: hsl(var(--kms-primary));
+  }
+  
+  .text-kms-secondary {
+    color: hsl(var(--kms-secondary));
+  }
+  
+  .text-kms-accent {
+    color: hsl(var(--kms-accent));
+  }
+  
+  /* KMS Brand Background Colors */
+  .bg-kms-primary {
+    background-color: hsl(var(--kms-primary));
+  }
+  
+  .bg-kms-secondary {
+    background-color: hsl(var(--kms-secondary));
+  }
+  
+  .bg-kms-accent {
+    background-color: hsl(var(--kms-accent));
+  }
+  
+  /* Enhanced shadows for modern look */
+  .shadow-modern {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+  
+  .shadow-modern-lg {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+}
+
+@layer components {
+  /* Custom component styles */
+  .btn-kms-primary {
+    @apply bg-kms-primary text-primary-foreground font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-modern;
+  }
+  
+  .btn-kms-primary:hover {
+    background-color: hsl(var(--kms-primary) / 0.9);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+  
+  .btn-kms-secondary {
+    @apply bg-kms-secondary text-secondary-foreground font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-modern;
+  }
+  
+  .btn-kms-secondary:hover {
+    background-color: hsl(var(--kms-secondary) / 0.9);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+  
+  .card-modern {
+    @apply bg-card border border-border/50 rounded-xl shadow-modern transition-all duration-300 backdrop-blur-sm;
+  }
+  
+  .card-modern:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-weight: 800;
+  }
+  
+  .font-body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+}
