@@ -8,7 +8,7 @@ import { SpecialCard } from '@/components/special-card'
 import { SpecialsTable } from '@/components/specials-table'
 import { FilterSheet } from '@/components/filter-sheet'
 import { debounce } from '@/lib/utils/index'
-import { Search, Download, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useMediaQuery } from '@/hooks/use-media-query'
 
 export default function HomePage() {
@@ -96,30 +96,6 @@ export default function HomePage() {
     fetchSpecials(newPage, searchQuery, filters)
   }
 
-  const handleExport = async (format: 'xlsx' | 'csv' = 'xlsx') => {
-    try {
-      const response = await fetch(`/api/admin/export?format=${format}`, {
-        headers: {
-          'x-admin-token': process.env.NEXT_PUBLIC_ADMIN_TOKEN || 'demo',
-        },
-      })
-
-      if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `specials-export.${format}`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        window.URL.revokeObjectURL(url)
-      }
-    } catch (error) {
-      console.error('Export failed:', error)
-    }
-  }
-
   return (
     <div className="min-h-screen kms-gradient-subtle">
       {/* Modern Header with Gradient */}
@@ -127,28 +103,49 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                <span className="text-2xl font-heading text-white">KMS</span>
+              <div className="h-12 w-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm p-2">
+                <img 
+                  src="/kms_logo.png" 
+                  alt="KMS Logo" 
+                  className="h-full w-full object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-3xl font-heading text-white">Korean Motor Spares</h1>
                 <p className="text-white/80 font-medium">Premium Auto Parts Specials</p>
               </div>
             </div>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => handleExport()}
-              className="hidden sm:flex btn-kms-secondary shadow-modern hover:shadow-modern-lg"
-            >
-              <Download className="h-5 w-5 mr-2" />
-              Export Data
-            </Button>
           </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {/* Special Terms Disclaimer */}
+        <div className="mb-8">
+          <div className="card-modern p-6 bg-gradient-to-r from-kms-accent/10 to-kms-secondary/10 backdrop-blur-sm border-2 border-kms-accent/30">
+            <div className="flex items-start space-x-4">
+              <div className="h-6 w-6 bg-kms-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-white text-sm font-bold">!</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-heading text-kms-secondary text-lg font-bold mb-2">
+                  Important Special Offer Terms
+                </h3>
+                <div className="space-y-2 text-kms-secondary/80">
+                  <p className="flex items-start">
+                    <span className="text-kms-accent font-bold mr-2">•</span>
+                    <span>Parts on specials <strong>cannot be further discounted</strong> and are offered at the best available price.</span>
+                  </p>
+                  <p className="flex items-start">
+                    <span className="text-kms-accent font-bold mr-2">•</span>
+                    <span>Specials are <strong>applicable to select branches only</strong>. Please contact your preferred branch first to confirm availability and applicable pricing.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Enhanced Search and Filters Section */}
         <div className="mb-8">
           <div className="card-modern p-6 bg-white/70 backdrop-blur-sm">
@@ -174,14 +171,6 @@ export default function HomePage() {
                   onClearFilters={handleClearFilters}
                   hasActiveFilters={hasActiveFilters}
                 />
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => handleExport()}
-                  className="sm:hidden h-12 px-4 border-2 border-kms-accent text-kms-accent hover:bg-kms-accent hover:text-white"
-                >
-                  <Download className="h-5 w-5" />
-                </Button>
               </div>
             </div>
           </div>

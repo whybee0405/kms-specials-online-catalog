@@ -56,8 +56,11 @@ export function SpecialCard({ special }: SpecialCardProps) {
             <div className="text-2xl font-heading text-kms-accent mb-1">
               {formatZAR(special.selling_price)}
             </div>
+            <p className="text-xs text-kms-accent/70 font-medium mb-1">
+              Retail Price (excl VAT)
+            </p>
             <p className="text-sm text-kms-secondary font-medium">
-              Wholesale: {formatZAR(special.wholesale_price)}
+              Wholesale: {formatZAR(special.wholesale_price)} <span className="text-xs text-kms-secondary/70">(excl VAT)</span>
             </p>
           </div>
           <div className="text-right space-y-2">

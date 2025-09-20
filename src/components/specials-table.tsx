@@ -29,6 +29,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { VehicleModal } from '@/components/vehicle-modal'
 import { ArrowUpDown, ChevronDown } from 'lucide-react'
 
 interface SpecialsTableProps {
@@ -39,8 +40,19 @@ interface SpecialsTableProps {
 export function SpecialsTable({ data, loading }: SpecialsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    wholesale_price: false, // Hide wholesale price by default
+  })
   const [rowSelection, setRowSelection] = useState({})
+  const [selectedVehicles, setSelectedVehicles] = useState<string[]>([])
+  const [selectedPartName, setSelectedPartName] = useState<string>('')
+  const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false)
+
+  const handleVehicleClick = (vehicles: string[], partName: string) => {
+    setSelectedVehicles(vehicles || [])
+    setSelectedPartName(partName)
+    setIsVehicleModalOpen(true)
+  }
 
   const columns = useMemo<ColumnDef<Special>[]>(
     () => [
@@ -86,7 +98,7 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
           <span className="font-heading text-kms-secondary">Factory #</span>
         ),
         cell: ({ row }) => {
-          const factoryNumber = row.getValue('factory_number')
+          const factoryNumber = row.getValue('factory_number') as string
           return (
             <div className="font-mono text-sm text-kms-secondary/80">
               {factoryNumber || '-'}
@@ -101,6 +113,7 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
         ),
         cell: ({ row }) => {
           const refs = row.getValue('vehicle_reference') as string[]
+          const partName = row.getValue('part_name') as string
           return (
             <div className="max-w-[220px]">
               {refs && refs.length > 0 ? (
@@ -111,7 +124,11 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
                     </Badge>
                   ))}
                   {refs.length > 2 && (
-                    <Badge className="text-xs bg-kms-accent text-white font-medium px-2 py-1">
+                    <Badge 
+                      className="text-xs bg-kms-accent text-white font-medium px-2 py-1 cursor-pointer hover:bg-kms-accent/80 transition-colors duration-200"
+                      onClick={() => handleVehicleClick(refs, partName)}
+                      title="Click to view all compatible vehicles"
+                    >
                       +{refs.length - 2} more
                     </Badge>
                   )}
@@ -158,7 +175,7 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-auto p-0 font-heading text-kms-accent hover:text-kms-primary"
           >
-            Retail Price
+            Retail Price (excl VAT)
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         ),
@@ -179,7 +196,7 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             className="h-auto p-0 font-heading text-kms-secondary hover:text-kms-primary"
           >
-            Wholesale
+            Wholesale (excl VAT)
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         ),
@@ -397,6 +414,14 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
           </Button>
         </div>
       </div>
+
+      {/* Vehicle Modal */}
+      <VehicleModal
+        open={isVehicleModalOpen}
+        onOpenChange={setIsVehicleModalOpen}
+        vehicles={selectedVehicles}
+        partName={selectedPartName}
+      />
     </div>
   )
 }

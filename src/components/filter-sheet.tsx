@@ -75,8 +75,8 @@ export function FilterSheet({
         </Button>
       </SheetTrigger>
       
-      <SheetContent side="left" className="w-full sm:max-w-md border-r-2 border-kms-primary/20 bg-white/95 backdrop-blur-lg">
-        <SheetHeader className="pb-6 border-b border-kms-primary/20">
+      <SheetContent side="left" className="w-full sm:max-w-md border-r-2 border-kms-primary/20 bg-white/95 backdrop-blur-lg flex flex-col">
+        <SheetHeader className="pb-6 border-b border-kms-primary/20 flex-shrink-0">
           <SheetTitle className="flex items-center justify-between">
             <span className="font-heading text-xl text-kms-secondary">Filter Parts</span>
             {hasActiveFilters && (
@@ -96,73 +96,75 @@ export function FilterSheet({
           </p>
         </SheetHeader>
 
-        <div className="space-y-6 py-6">
-          {Object.entries(FILTER_OPTIONS).map(([filterKey, options]) => {
-            const typedFilterKey = filterKey as keyof SpecialFilters
-            const activeValues = (filters[typedFilterKey] as string[]) || []
+        <div className="flex-1 overflow-y-auto py-6 pr-2">
+          <div className="space-y-6">
+            {Object.entries(FILTER_OPTIONS).map(([filterKey, options]) => {
+              const typedFilterKey = filterKey as keyof SpecialFilters
+              const activeValues = (filters[typedFilterKey] as string[]) || []
 
-            return (
-              <div key={filterKey} className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-kms-primary/20">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-heading text-kms-secondary text-base font-bold">
-                    {FILTER_LABELS[typedFilterKey]}
-                  </h3>
+              return (
+                <div key={filterKey} className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-kms-primary/20">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-heading text-kms-secondary text-base font-bold">
+                      {FILTER_LABELS[typedFilterKey]}
+                    </h3>
+                    {activeValues.length > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onFiltersChange({
+                          ...filters,
+                          [typedFilterKey]: undefined,
+                        })}
+                        className="h-auto p-2 text-kms-accent hover:bg-kms-accent/10 rounded-lg"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    {options.map((option) => {
+                      const isActive = activeValues.includes(option)
+                      return (
+                        <button
+                          key={option}
+                          onClick={() => handleFilterToggle(typedFilterKey, option)}
+                          className="transition-all duration-200"
+                        >
+                          <Badge
+                            className={`w-full justify-center py-2 px-3 text-sm font-medium shadow-modern hover:shadow-modern-lg transition-all duration-200 ${
+                              isActive 
+                                ? 'bg-kms-secondary text-white border-kms-secondary' 
+                                : 'bg-white text-kms-secondary border-2 border-kms-secondary/30 hover:border-kms-secondary/60 hover:bg-kms-secondary/5'
+                            }`}
+                          >
+                            {option}
+                          </Badge>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  
                   {activeValues.length > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onFiltersChange({
-                        ...filters,
-                        [typedFilterKey]: undefined,
-                      })}
-                      className="h-auto p-2 text-kms-accent hover:bg-kms-accent/10 rounded-lg"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                    <div className="mt-3 pt-3 border-t border-kms-primary/20">
+                      <p className="text-xs text-kms-secondary/70 mb-2">Selected:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {activeValues.map((value, index) => (
+                          <Badge key={index} className="bg-kms-primary text-kms-secondary text-xs px-2 py-1">
+                            {value}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  {options.map((option) => {
-                    const isActive = activeValues.includes(option)
-                    return (
-                      <button
-                        key={option}
-                        onClick={() => handleFilterToggle(typedFilterKey, option)}
-                        className="transition-all duration-200"
-                      >
-                        <Badge
-                          className={`w-full justify-center py-2 px-3 text-sm font-medium shadow-modern hover:shadow-modern-lg transition-all duration-200 ${
-                            isActive 
-                              ? 'bg-kms-secondary text-white border-kms-secondary' 
-                              : 'bg-white text-kms-secondary border-2 border-kms-secondary/30 hover:border-kms-secondary/60 hover:bg-kms-secondary/5'
-                          }`}
-                        >
-                          {option}
-                        </Badge>
-                      </button>
-                    )
-                  })}
-                </div>
-                
-                {activeValues.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-kms-primary/20">
-                    <p className="text-xs text-kms-secondary/70 mb-2">Selected:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {activeValues.map((value, index) => (
-                        <Badge key={index} className="bg-kms-primary text-kms-secondary text-xs px-2 py-1">
-                          {value}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
 
-        <div className="border-t border-kms-primary/20 pt-6 pb-6">
+        <div className="border-t border-kms-primary/20 pt-6 pb-6 flex-shrink-0">
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-kms-secondary font-medium">Active Filters:</span>
