@@ -75,7 +75,14 @@ export function specialToCSVRow(special: Special): Record<string, any> {
 export function csvRowToSpecialInput(row: any): any {
   // Handle both template format (user-friendly headers) and raw format (database field names)
   const getValue = (templateKey: string, rawKey: string) => {
-    return row[templateKey] || row[rawKey] || ''
+    const value = row[templateKey] || row[rawKey]
+    return value !== undefined ? value : ''
+  }
+
+  const getStringValue = (templateKey: string, rawKey: string) => {
+    const value = getValue(templateKey, rawKey)
+    const stringValue = String(value).trim()
+    return stringValue === '' || stringValue === 'undefined' ? null : stringValue
   }
 
   const getArrayValue = (templateKey: string, rawKey: string) => {
@@ -86,9 +93,9 @@ export function csvRowToSpecialInput(row: any): any {
   return {
     id: String(getValue('ID', 'id')).trim() || uuidv4(),
     system_number: String(getValue('System Number', 'system_number')).trim(),
-    factory_number: String(getValue('Factory Number', 'factory_number')).trim() || null,
+    factory_number: getStringValue('Factory Number', 'factory_number'),
     part_name: String(getValue('Part Name', 'part_name')).trim(),
-    part_description: String(getValue('Description', 'part_description')).trim() || null,
+    part_description: getStringValue('Description', 'part_description'),
     vehicle_reference: getArrayValue('Vehicle Reference', 'vehicle_reference'),
     alter_numbers: getArrayValue('Alternative Numbers', 'alter_numbers'),
     fr_rr: String(getValue('Front/Rear', 'fr_rr') || 'UNKNOWN').trim().toUpperCase() as 'FRONT' | 'REAR' | 'UNKNOWN',
@@ -99,7 +106,7 @@ export function csvRowToSpecialInput(row: any): any {
     wholesale_price: parseFloat(String(getValue('Wholesale Price', 'wholesale_price') || '0')),
     packaging: String(getValue('Packaging', 'packaging') || 'EACH').trim().toUpperCase() as 'EACH' | 'SET' | 'KIT',
     condition: String(getValue('Condition', 'condition') || 'UNKNOWN').trim().toUpperCase() as 'NEW' | 'USED' | 'REFURB' | 'OPEN_BOX' | 'UNKNOWN',
-    img: String(getValue('Image URL', 'img')).trim() || null,
+    img: getStringValue('Image URL', 'img'),
     created_at: getValue('Created At', 'created_at') ? 
       new Date(String(getValue('Created At', 'created_at'))).getTime() : 
       Date.now(),
