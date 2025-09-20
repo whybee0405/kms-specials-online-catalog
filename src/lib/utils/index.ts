@@ -1,4 +1,4 @@
-import { Special } from '@/types'
+import { Special, CreateSpecialInput } from '@/types'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
@@ -113,7 +113,7 @@ export function csvRowToSpecialInput(row: any): any {
     updated_at: getValue('Updated At', 'updated_at') ? 
       new Date(String(getValue('Updated At', 'updated_at'))).getTime() : 
       Date.now(),
-  }
+  } as CreateSpecialInput
 }
 
 /**

@@ -19,7 +19,26 @@ export type Special = {
   updated_at: number // unix timestamp ms
 }
 
-export type CreateSpecialInput = Omit<Special, 'id' | 'createdAt' | 'updatedAt'>
+export type CreateSpecialInput = {
+  id?: string
+  vehicle_reference: string[]
+  system_number: string
+  factory_number?: string | null
+  alter_numbers: string[]
+  part_name: string
+  part_description?: string | null
+  fr_rr: 'FRONT' | 'REAR' | 'UNKNOWN'
+  lh_rh: 'LEFT' | 'RIGHT' | 'BOTH' | 'UNKNOWN' 
+  inr_otr: 'INNR' | 'OUTR' | 'BOTH' | 'UNKNOWN'
+  quantity_available: number
+  img?: string | null
+  selling_price: number
+  wholesale_price: number
+  packaging: 'EACH' | 'SET' | 'KIT'
+  condition: 'NEW' | 'USED' | 'REFURB' | 'OPEN_BOX' | 'UNKNOWN'
+  created_at?: number
+  updated_at?: number
+}
 
 export type UpdateSpecialInput = Partial<CreateSpecialInput> & { id: string }
 

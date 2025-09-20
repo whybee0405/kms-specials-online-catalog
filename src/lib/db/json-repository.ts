@@ -137,6 +137,9 @@ export class JSONRepository implements SpecialRepository {
     const special: Special = {
       ...input,
       id: uuidv4(),
+      factory_number: input.factory_number ?? null,
+      part_description: input.part_description ?? null,
+      img: input.img ?? null,
       created_at: now,
       updated_at: now,
     }
@@ -189,6 +192,9 @@ export class JSONRepository implements SpecialRepository {
     const newSpecials: Special[] = inputs.map(input => ({
       ...input,
       id: uuidv4(),
+      factory_number: input.factory_number ?? null,
+      part_description: input.part_description ?? null,
+      img: input.img ?? null,
       created_at: now,
       updated_at: now,
     }))
@@ -221,6 +227,9 @@ export class JSONRepository implements SpecialRepository {
         const newSpecial: Special = {
           ...input,
           id: uuidv4(),
+          factory_number: input.factory_number ?? null,
+          part_description: input.part_description ?? null,
+          img: input.img ?? null,
           created_at: now,
           updated_at: now,
         }

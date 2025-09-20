@@ -83,7 +83,7 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
         accessorKey: 'factory_number',
         header: 'Factory #',
         cell: ({ row }) => {
-          const factoryNumber = row.getValue('factory_number')
+          const factoryNumber = row.getValue('factory_number') as string | null
           return (
             <div className="font-mono text-sm">
               {factoryNumber || '-'}
