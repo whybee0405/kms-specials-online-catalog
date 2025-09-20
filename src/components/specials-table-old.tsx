@@ -118,6 +118,8 @@ export function SpecialsTable({ data, loading }: SpecialsTableProps) {
           )
         },
       },
+      {
+        accessorKey: 'manufacturer',
         header: 'Brand',
         cell: ({ row }) => (
           <div className="font-medium">

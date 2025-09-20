@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { Special, SpecialFilters, PaginatedResult } from '@/types'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -104,9 +105,11 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="h-12 w-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm p-2">
-                <img 
+                <Image 
                   src="/kms_logo.png" 
                   alt="KMS Logo" 
+                  width={48}
+                  height={48}
                   className="h-full w-full object-contain"
                 />
               </div>
